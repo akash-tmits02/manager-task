@@ -3,56 +3,30 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../lib/auth";
+import { useTasks } from "../../features/tasks/TaskContext";
+import { TASK_PRIORITIES, PRIORITY_COLORS } from "../../constants";
+import { Button, TextField, IconButton, Checkbox } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import styles from "./tasks.module.css";
 
-const PRIORITIES = ["Low", "Medium", "High"];
-const PRIORITY_COLORS = { Low: "#34d399", Medium: "#f59e0b", High: "#f87171" };
-
 export default function TasksPage() {
-  const { user, loading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const router = useRouter();
 
-  const [tasks, setTasks] = useState([]);
+  const { tasks, addTask, toggleComplete, deleteTask, loading: tasksLoading } = useTasks();
   const [input, setInput] = useState("");
   const [priority, setPriority] = useState("Medium");
-  const [filter, setFilter] = useState("All"); // All | Pending | Completed
+  const [filter, setFilter] = useState("All");
 
   useEffect(() => {
-    if (!loading && !user) router.push("/login");
-  }, [user, loading, router]);
+    if (!authLoading && !user) router.push("/login");
+  }, [user, authLoading, router]);
 
-  useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("tasks") || "[]");
-    setTasks(saved);
-  }, []);
-
-  const save = (updated) => {
-    setTasks(updated);
-    localStorage.setItem("tasks", JSON.stringify(updated));
-  };
-
-  const addTask = (e) => {
+  const handleAddTask = (e) => {
     e.preventDefault();
     if (!input.trim()) return;
-    const newTask = {
-      id: Date.now(),
-      text: input.trim(),
-      completed: false,
-      priority,
-      createdAt: new Date().toLocaleDateString("en-IN", {
-        day: "2-digit", month: "short", year: "numeric",
-      }),
-    };
-    save([newTask, ...tasks]);
+    addTask(input, priority);
     setInput("");
-  };
-
-  const toggleComplete = (id) => {
-    save(tasks.map((t) => (t.id === id ? { ...t, completed: !t.completed } : t)));
-  };
-
-  const deleteTask = (id) => {
-    save(tasks.filter((t) => t.id !== id));
   };
 
   const filtered = tasks.filter((t) => {
@@ -61,7 +35,7 @@ export default function TasksPage() {
     return true;
   });
 
-  if (loading || !user) return null;
+  if (authLoading || !user || tasksLoading) return null;
 
   return (
     <div className={styles.page}>
@@ -72,17 +46,17 @@ export default function TasksPage() {
         </div>
       </div>
 
-      {/* Add Task Form */}
-      <form onSubmit={addTask} className={styles.addForm}>
-        <input
-          type="text"
-          className={styles.addInput}
+      <form onSubmit={handleAddTask} className={styles.addForm}>
+        <TextField
+          size="small"
+          variant="outlined"
           placeholder="What needs to be done?"
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          sx={{ flexGrow: 1, backgroundColor: "rgba(255,255,255,0.05)", borderRadius: 1 }}
         />
         <div className={styles.priorityGroup}>
-          {PRIORITIES.map((p) => (
+          {TASK_PRIORITIES.map((p) => (
             <button
               key={p}
               type="button"
@@ -94,10 +68,11 @@ export default function TasksPage() {
             </button>
           ))}
         </div>
-        <button type="submit" className={styles.addBtn}>+ Add Task</button>
+        <Button variant="contained" type="submit" sx={{ whiteSpace: "nowrap" }}>
+          + Add Task
+        </Button>
       </form>
 
-      {/* Filter Tabs */}
       <div className={styles.filterRow}>
         {["All", "Pending", "Completed"].map((f) => (
           <button
@@ -113,7 +88,6 @@ export default function TasksPage() {
         ))}
       </div>
 
-      {/* Task List */}
       <div className={styles.taskList}>
         {filtered.length === 0 && (
           <div className={styles.empty}>
@@ -125,15 +99,14 @@ export default function TasksPage() {
           <div
             key={task.id}
             className={`${styles.taskCard} ${task.completed ? styles.taskDone : ""}`}
+            style={{ display: 'flex', alignItems: 'center' }}
           >
-            <button
-              className={`${styles.checkbox} ${task.completed ? styles.checkboxDone : ""}`}
-              onClick={() => toggleComplete(task.id)}
-              aria-label="Toggle complete"
-            >
-              {task.completed ? "✓" : ""}
-            </button>
-            <div className={styles.taskBody}>
+            <Checkbox
+              checked={task.completed}
+              onChange={() => toggleComplete(task.id)}
+              color="primary"
+            />
+            <div className={styles.taskBody} style={{ flexGrow: 1, marginLeft: 8 }}>
               <p className={styles.taskText}>{task.text}</p>
               <div className={styles.taskMeta}>
                 {task.priority && (
@@ -149,13 +122,9 @@ export default function TasksPage() {
                 )}
               </div>
             </div>
-            <button
-              className={styles.deleteBtn}
-              onClick={() => deleteTask(task.id)}
-              aria-label="Delete task"
-            >
-              🗑
-            </button>
+            <IconButton onClick={() => deleteTask(task.id)} color="error" size="small">
+              <DeleteIcon />
+            </IconButton>
           </div>
         ))}
       </div>
