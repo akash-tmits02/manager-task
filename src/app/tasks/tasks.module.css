@@ -1,8 +1,5 @@
 .page {
-  min-height: 100vh;
-  background: linear-gradient(135deg, #0f0c29 0%, #1a1040 50%, #0d1117 100%);
-  padding: 32px;
-  color: #fff;
+  padding: 40px;
 }
 
 .header {
@@ -10,18 +7,15 @@
 }
 
 .title {
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 800;
-  background: linear-gradient(90deg, #a78bfa, #60a5fa);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--foreground);
   margin: 0 0 6px;
 }
 
 .subtitle {
-  color: rgba(255,255,255,0.4);
-  font-size: 0.875rem;
+  color: var(--text-muted);
+  font-size: 0.95rem;
   margin: 0;
 }
 
@@ -30,32 +24,33 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.1);
+  background: var(--card-bg);
   border-radius: 16px;
-  padding: 16px 20px;
+  padding: 20px;
   margin-bottom: 24px;
   flex-wrap: wrap;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
 }
 
 .addInput {
   flex: 1;
   min-width: 200px;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.02);
+  border: 1px solid rgba(0,0,0,0.05);
   border-radius: 10px;
-  color: #fff;
+  color: var(--foreground);
   font-size: 0.95rem;
   padding: 12px 16px;
   outline: none;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.addInput::placeholder { color: rgba(255,255,255,0.3); }
+.addInput::placeholder { color: var(--text-muted); }
 
 .addInput:focus {
-  border-color: #a78bfa;
-  box-shadow: 0 0 0 3px rgba(167,139,250,0.15);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(107, 70, 193, 0.1);
+  background: #fff;
 }
 
 .priorityGroup {
@@ -64,10 +59,10 @@
 }
 
 .priorityBtn {
-  background: rgba(255,255,255,0.06);
-  border: 1px solid rgba(255,255,255,0.12);
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.1);
   border-radius: 8px;
-  color: rgba(255,255,255,0.55);
+  color: var(--text-muted);
   cursor: pointer;
   font-size: 0.8rem;
   font-weight: 600;
@@ -76,6 +71,7 @@
 }
 
 .priorityBtn:hover {
+  background: rgba(0,0,0,0.02);
   border-color: var(--pcolor);
   color: var(--pcolor);
 }
@@ -112,37 +108,38 @@
 }
 
 .filterBtn {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.05);
   border-radius: 10px;
-  color: rgba(255,255,255,0.5);
+  color: var(--text-muted);
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   padding: 9px 18px;
   transition: all 0.2s;
 }
 
 .filterBtn:hover {
-  background: rgba(255,255,255,0.08);
-  color: #fff;
+  background: rgba(0,0,0,0.03);
+  color: var(--foreground);
 }
 
 .filterActive {
-  background: rgba(167,139,250,0.15) !important;
-  border-color: rgba(167,139,250,0.4) !important;
-  color: #a78bfa !important;
+  background: rgba(107, 70, 193, 0.08) !important;
+  border-color: transparent !important;
+  color: var(--accent) !important;
 }
 
 .filterCount {
-  background: rgba(255,255,255,0.1);
+  background: rgba(0,0,0,0.05);
   border-radius: 99px;
   font-size: 0.75rem;
   font-weight: 700;
-  padding: 1px 8px;
+  padding: 2px 8px;
+  color: var(--foreground);
 }
 
 /* TASK LIST */
@@ -158,22 +155,26 @@
   align-items: center;
   gap: 10px;
   padding: 60px 0;
-  color: rgba(255,255,255,0.3);
+  color: var(--text-muted);
 }
 
-.emptyIcon { font-size: 2.5rem; }
-.empty p { margin: 0; font-size: 0.9rem; }
+.emptyIconSvg {
+  font-size: 4rem !important;
+  color: rgba(0,0,0,0.1);
+}
+.empty p { margin: 0; font-size: 0.95rem; font-weight: 500; }
 
 /* TASK CARD */
 .taskCard {
   display: flex;
   align-items: flex-start;
   gap: 16px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
+  background: var(--card-bg);
+  border: none;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.02);
   border-radius: 14px;
   padding: 16px 20px;
-  transition: transform 0.2s, border-color 0.2s, background 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
   animation: fadeIn 0.3s ease;
 }
 
@@ -184,8 +185,7 @@
 
 .taskCard:hover {
   transform: translateY(-2px);
-  border-color: rgba(255,255,255,0.15);
-  background: rgba(255,255,255,0.06);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
 }
 
 .taskDone {
@@ -197,7 +197,7 @@
   height: 24px;
   min-width: 24px;
   border-radius: 50%;
-  border: 2px solid rgba(255,255,255,0.2);
+  border: 2px solid rgba(0,0,0,0.1);
   background: transparent;
   color: #34d399;
   cursor: pointer;
@@ -212,13 +212,13 @@
 }
 
 .checkbox:hover {
-  border-color: #34d399;
-  background: rgba(52,211,153,0.1);
+  border-color: #2ed573;
+  background: rgba(46, 213, 115, 0.05);
 }
 
 .checkboxDone {
-  border-color: #34d399 !important;
-  background: rgba(52,211,153,0.2) !important;
+  border-color: #2ed573 !important;
+  background: rgba(46, 213, 115, 0.1) !important;
 }
 
 .taskBody { flex: 1; }
@@ -226,13 +226,14 @@
 .taskText {
   margin: 0 0 8px;
   font-size: 0.95rem;
-  color: rgba(255,255,255,0.85);
+  color: var(--foreground);
+  font-weight: 600;
   line-height: 1.4;
 }
 
 .taskDone .taskText {
   text-decoration: line-through;
-  color: rgba(255,255,255,0.4);
+  color: var(--text-muted);
 }
 
 .taskMeta {
@@ -244,33 +245,42 @@
 
 .priorityBadge {
   background: color-mix(in srgb, var(--pcolor) 15%, transparent);
-  border: 1px solid color-mix(in srgb, var(--pcolor) 40%, transparent);
-  border-radius: 99px;
+  border: none;
+  border-radius: 6px;
   color: var(--pcolor);
   font-size: 0.72rem;
   font-weight: 700;
-  padding: 2px 10px;
+  padding: 4px 10px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
 .taskDate {
-  color: rgba(255,255,255,0.35);
-  font-size: 0.78rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+.dateIcon {
+  font-size: 0.95rem !important;
+  color: rgba(0,0,0,0.3);
 }
 
 .deleteBtn {
   background: transparent;
   border: none;
-  color: rgba(255,255,255,0.2);
+  color: rgba(239, 68, 68, 0.6);
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1.1rem;
   padding: 4px;
   border-radius: 6px;
   transition: color 0.2s, background 0.2s;
 }
 
 .deleteBtn:hover {
-  color: #f87171;
-  background: rgba(248,113,113,0.1);
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
 }

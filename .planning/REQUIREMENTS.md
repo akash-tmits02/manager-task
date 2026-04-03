@@ -12,10 +12,16 @@
 
 ### Refactoring
 
-- [ ] **REFC-01**: Extract duplicate localStorage task logic into shared custom hooks
-- [ ] **REFC-02**: Remove unused code and legacy standalone components
-- [ ] **REFC-03**: Centralize all constants (e.g., priority levels, colors, API URLs)
-- [ ] **REFC-04**: Add TypeScript support and types/interfaces for Tasks and Weather entities (optional step or JS doc types)
+- [x] **REFC-01**: Extract duplicate localStorage task logic into shared custom hooks
+- [x] **REFC-02**: Remove unused code and legacy standalone components
+- [x] **REFC-03**: Centralize all constants (e.g., priority levels, colors, API URLs)
+- [x] **REFC-04**: Add TypeScript support and types/interfaces for Tasks and Weather entities (optional step or JS doc types)
+### Scalability & Data Layer
+
+- [ ] **REFC-05**: Migrate Task state management to a Zustand store (`src/features/tasks/taskStore.js`)
+- [ ] **REFC-06**: Migrate Auth state management to a Zustand store (`src/lib/authStore.js`)
+- [ ] **ARCH-04**: Abstract persistence logic into a dedicated service layer (`src/services/taskService.js`)
+- [ ] **ARCH-05**: Implement Zod validation for Task and User entities to ensure data integrity
 
 ## Traceability
 
@@ -24,12 +30,16 @@
 | ARCH-01 | Phase 1 | Complete ✓ |
 | ARCH-02 | Phase 1 | Complete ✓ |
 | ARCH-03 | Phase 1 | Complete ✓ |
-| REFC-01 | Phase 2 | Pending |
-| REFC-02 | Phase 2 | Pending |
-| REFC-03 | Phase 2 | Pending |
-| REFC-04 | Phase 2 | Pending |
+| REFC-01 | Phase 2 | Complete ✓ |
+| REFC-02 | Phase 2 | Complete ✓ |
+| REFC-03 | Phase 2 | Complete ✓ |
+| REFC-04 | Phase 2 | Complete ✓ |
+| REFC-05 | Phase 3 | Complete ✓ |
+| REFC-06 | Phase 3 | Complete ✓ |
+| ARCH-04 | Phase 3 | Complete ✓ |
+| ARCH-05 | Phase 3 | Complete ✓ |
 
 **Coverage:**
-- v1 requirements: 7 total
-- Mapped to phases: 7
+- v1 requirements: 11 total
+- Mapped to phases: 11
 - Unmapped: 0 ✓

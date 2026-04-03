@@ -13,16 +13,16 @@ A highly maintainable, scalable, and clean architecture that eliminates technica
 ### Validated
 
 - ✓ LocalStorage persistence
-- ✓ Weather API integration 
+- ✓ Weather API integration
 - ✓ Task CRUD
 
 ### Active
 
-- [ ] Next.js 15 migration
-- [ ] Material UI implementation (replacing Tailwind)
-- [ ] Feature-based folder structure (`features/`)
-- [ ] Shared components, hooks, services, types, constants, utilities separation
-- [ ] Code deduplication and cleanup
+- [x] Next.js 15 migration (Complete ARCH-01)
+- [x] Material UI implementation (Complete ARCH-01)
+- [x] Feature-based folder structure (Complete ARCH-02)
+- [x] Shared components, hooks, services, types, constants, utilities separation (Complete REFC-01, REFC-03)
+- [x] Code deduplication and cleanup (Complete REFC-02)
 
 ### Out of Scope
 
@@ -31,7 +31,7 @@ A highly maintainable, scalable, and clean architecture that eliminates technica
 
 ## Context
 
-The previous architecture had a messy folder structure, weak separation of concerns, duplicate component logic (e.g., repeating localStorage calls), and no clear types/constants. 
+The previous architecture had a messy folder structure, weak separation of concerns, duplicate component logic (e.g., repeating localStorage calls), and no clear types/constants.
 
 ## Constraints
 
@@ -40,10 +40,11 @@ The previous architecture had a messy folder structure, weak separation of conce
 
 ## Key Decisions
 
-| Decision | Rationale | Outcome |
-|----------|-----------|---------|
-| Feature-based folders | Scalability and organization | — Pending |
-| Material UI | Enterprise component standard | — Pending |
+| Decision              | Rationale                     | Outcome   |
+| --------------------- | ----------------------------- | --------- |
+| Feature-based folders | Scalability and organization  | — Pending |
+| Material UI           | Enterprise component standard | — Pending |
 
 ---
-*Last updated: Today after initialization*
+
+_Last updated: Today after initialization_

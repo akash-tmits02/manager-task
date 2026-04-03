@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../../lib/auth";
+import { useAuthStore } from "../../lib/authStore";
+import TaskAltIcon from "@mui/icons-material/TaskAlt";
 import styles from "./login.module.css";
 
 export default function LoginPage() {
@@ -10,7 +11,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { login } = useAuthStore();
   const router = useRouter();
 
   const handleLogin = async (e) => {
@@ -31,7 +32,9 @@ export default function LoginPage() {
     <div className={styles.page}>
       <div className={styles.card}>
         <div className={styles.logo}>
-          <span className={styles.logoIcon}>✅</span>
+          <div className={styles.logoIconWrapper}>
+            <TaskAltIcon className={styles.logoIcon} />
+          </div>
           <h1 className={styles.logoTitle}>TaskFlow</h1>
           <p className={styles.logoSub}>Manage your tasks efficiently</p>
         </div>

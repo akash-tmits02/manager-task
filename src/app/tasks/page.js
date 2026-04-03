@@ -2,20 +2,27 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuth } from "../../lib/auth";
-import { useTasks } from "../../features/tasks/TaskContext";
-import { TASK_PRIORITIES, PRIORITY_COLORS } from "../../constants";
+import { useAuthStore } from "../../lib/authStore";
+import { useTaskStore } from "../../features/tasks/taskStore";
+import { 
+  TASK_PRIORITIES, 
+  PRIORITY_COLORS, 
+  DEFAULT_TASK_PRIORITY, 
+  TASK_FILTERS 
+} from "../../constants";
 import { Button, TextField, IconButton, Checkbox } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import InboxIcon from "@mui/icons-material/Inbox";
+import EventIcon from "@mui/icons-material/Event";
 import styles from "./tasks.module.css";
 
 export default function TasksPage() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading } = useAuthStore();
   const router = useRouter();
 
-  const { tasks, addTask, toggleComplete, deleteTask, loading: tasksLoading } = useTasks();
+  const { tasks, addTask, toggleComplete, deleteTask, loading: tasksLoading } = useTaskStore();
   const [input, setInput] = useState("");
-  const [priority, setPriority] = useState("Medium");
+  const [priority, setPriority] = useState(DEFAULT_TASK_PRIORITY);
   const [filter, setFilter] = useState("All");
 
   useEffect(() => {
@@ -74,7 +81,7 @@ export default function TasksPage() {
       </form>
 
       <div className={styles.filterRow}>
-        {["All", "Pending", "Completed"].map((f) => (
+        {TASK_FILTERS.map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
@@ -91,7 +98,7 @@ export default function TasksPage() {
       <div className={styles.taskList}>
         {filtered.length === 0 && (
           <div className={styles.empty}>
-            <span className={styles.emptyIcon}>📭</span>
+            <InboxIcon className={styles.emptyIconSvg} />
             <p>No tasks here. Add one above!</p>
           </div>
         )}
@@ -118,7 +125,10 @@ export default function TasksPage() {
                   </span>
                 )}
                 {task.createdAt && (
-                  <span className={styles.taskDate}>📅 {task.createdAt}</span>
+                  <span className={styles.taskDate}>
+                    <EventIcon className={styles.dateIcon} />
+                    {task.createdAt}
+                  </span>
                 )}
               </div>
             </div>
