@@ -10,8 +10,11 @@ import {
   DEFAULT_TASK_PRIORITY, 
   TASK_FILTERS 
 } from "../../constants";
-import { Button, TextField, IconButton, Checkbox } from "@mui/material";
+import { Button, TextField, IconButton, Checkbox, Tooltip } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
 import InboxIcon from "@mui/icons-material/Inbox";
 import EventIcon from "@mui/icons-material/Event";
 import styles from "./tasks.module.css";
@@ -20,10 +23,15 @@ export default function TasksPage() {
   const { user, loading: authLoading } = useAuthStore();
   const router = useRouter();
 
-  const { tasks, addTask, toggleComplete, deleteTask, loading: tasksLoading } = useTaskStore();
+  const { tasks, addTask, toggleComplete, deleteTask, updateTask, loading: tasksLoading } = useTaskStore();
   const [input, setInput] = useState("");
   const [priority, setPriority] = useState(DEFAULT_TASK_PRIORITY);
   const [filter, setFilter] = useState("All");
+
+  // Edit State
+  const [editingId, setEditingId] = useState(null);
+  const [editText, setEditText] = useState("");
+  const [editPriority, setEditPriority] = useState(DEFAULT_TASK_PRIORITY);
 
   useEffect(() => {
     if (!authLoading && !user) router.push("/login");
@@ -34,6 +42,22 @@ export default function TasksPage() {
     if (!input.trim()) return;
     addTask(input, priority);
     setInput("");
+  };
+
+  const handleStartEdit = (task) => {
+    setEditingId(task.id);
+    setEditText(task.text);
+    setEditPriority(task.priority || DEFAULT_TASK_PRIORITY);
+  };
+
+  const handleSaveEdit = (id) => {
+    if (!editText.trim()) return;
+    updateTask(id, editText, editPriority);
+    setEditingId(null);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
   };
 
   const filtered = tasks.filter((t) => {
@@ -105,36 +129,96 @@ export default function TasksPage() {
         {filtered.map((task) => (
           <div
             key={task.id}
-            className={`${styles.taskCard} ${task.completed ? styles.taskDone : ""}`}
+            className={`${styles.taskCard} ${task.completed ? styles.taskDone : ""} ${editingId === task.id ? styles.taskEditing : ""}`}
             style={{ display: 'flex', alignItems: 'center' }}
           >
             <Checkbox
               checked={task.completed}
               onChange={() => toggleComplete(task.id)}
               color="primary"
+              disabled={editingId === task.id}
             />
+            
             <div className={styles.taskBody} style={{ flexGrow: 1, marginLeft: 8 }}>
-              <p className={styles.taskText}>{task.text}</p>
-              <div className={styles.taskMeta}>
-                {task.priority && (
-                  <span
-                    className={styles.priorityBadge}
-                    style={{ "--pcolor": PRIORITY_COLORS[task.priority] }}
-                  >
-                    {task.priority}
-                  </span>
-                )}
-                {task.createdAt && (
-                  <span className={styles.taskDate}>
-                    <EventIcon className={styles.dateIcon} />
-                    {task.createdAt}
-                  </span>
-                )}
-              </div>
+              {editingId === task.id ? (
+                <div className={styles.editContainer}>
+                  <TextField
+                    fullWidth
+                    size="small"
+                    variant="standard"
+                    value={editText}
+                    onChange={(e) => setEditText(e.target.value)}
+                    autoFocus
+                    className={styles.editInput}
+                  />
+                  <div className={styles.editMeta}>
+                    <div className={styles.priorityGroupSmall}>
+                      {TASK_PRIORITIES.map((p) => (
+                        <button
+                          key={p}
+                          type="button"
+                          onClick={() => setEditPriority(p)}
+                          className={`${styles.priorityBtnSmall} ${editPriority === p ? styles.priorityActiveSmall : ""}`}
+                          style={{ "--pcolor": PRIORITY_COLORS[p] }}
+                        >
+                          {p.charAt(0)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <p className={styles.taskText}>{task.text}</p>
+                  <div className={styles.taskMeta}>
+                    {task.priority && (
+                      <span
+                        className={styles.priorityBadge}
+                        style={{ "--pcolor": PRIORITY_COLORS[task.priority] }}
+                      >
+                        {task.priority}
+                      </span>
+                    )}
+                    {task.createdAt && (
+                      <span className={styles.taskDate}>
+                        <EventIcon className={styles.dateIcon} />
+                        {task.createdAt}
+                      </span>
+                    )}
+                  </div>
+                </>
+              )}
             </div>
-            <IconButton onClick={() => deleteTask(task.id)} color="error" size="small">
-              <DeleteIcon />
-            </IconButton>
+
+            <div className={styles.taskActions}>
+              {editingId === task.id ? (
+                <>
+                  <Tooltip title="Save">
+                    <IconButton onClick={() => handleSaveEdit(task.id)} color="primary" size="small">
+                      <CheckIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Cancel">
+                    <IconButton onClick={handleCancelEdit} color="inherit" size="small">
+                      <CloseIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                </>
+              ) : (
+                <>
+                  <Tooltip title="Edit">
+                    <IconButton onClick={() => handleStartEdit(task)} color="primary" size="small">
+                      <EditIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Delete">
+                    <IconButton onClick={() => deleteTask(task.id)} color="error" size="small">
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
+                  </Tooltip>
+                </>
+              )}
+            </div>
           </div>
         ))}
       </div>

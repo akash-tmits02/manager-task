@@ -63,6 +63,19 @@ export const useTaskStore = create((set, get) => ({
   },
 
   /**
+   * Updates an existing task's text and priority.
+   */
+  updateTask: (id, text, priority) => {
+    set((state) => {
+      const updatedTasks = state.tasks.map((t) => 
+        t.id === id ? { ...t, text: text.trim(), priority } : t
+      );
+      taskService.saveTasks(updatedTasks);
+      return { tasks: updatedTasks };
+    });
+  },
+
+  /**
    * Resets the entire task list (useful for logout/reset).
    */
   resetTasks: () => {
