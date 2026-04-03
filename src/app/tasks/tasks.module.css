@@ -284,3 +284,79 @@
   color: #ef4444;
   background: rgba(239, 68, 68, 0.1);
 }
+
+/* EDIT MODE */
+.taskEditing {
+  border: 1px solid var(--accent);
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(107, 70, 193, 0.12) !important;
+  transform: scale(1.01);
+  z-index: 10;
+}
+
+.editContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.editInput :global(.MuiInput-root) {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.editInput :global(.MuiInput-root:before),
+.editInput :global(.MuiInput-root:after) {
+  display: none;
+}
+
+.editInput :global(.MuiInput-input) {
+  padding: 4px 0;
+}
+
+.editMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.priorityGroupSmall {
+  display: flex;
+  gap: 4px;
+}
+
+.priorityBtnSmall {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,0.05);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 0.65rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.priorityBtnSmall:hover {
+  border-color: var(--pcolor);
+  color: var(--pcolor);
+}
+
+.priorityActiveSmall {
+  background: var(--pcolor);
+  border-color: var(--pcolor) !important;
+  color: #fff !important;
+}
+
+.taskActions {
+  display: flex;
+  gap: 4px;
+  align-self: center;
+}
+

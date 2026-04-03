@@ -1,6 +1,6 @@
 # Project Roadmap
 
-**Summary:** 3 phases | 11 requirements mapped | 100% Complete ✓
+**Summary:** 4 phases | 12 requirements mapped | 75% Complete ↻
 
 ---
 
@@ -19,3 +19,10 @@
 ## Phase 3: Scalable Data & State Layer (Complete ✓)
 **Goal:** Transition to a centralized, validated, and optimized state management system.
 **Success Criteria:** Complete REFC-05, REFC-06, ARCH-04, ARCH-05 ✓
+
+---
+
+## Phase 4: Task Management Enhancements (In Progress ↻)
+**Goal:** Add edit task functionality with inline editing and icon triggers.
+**Depends on:** Phase 3
+**Status:** Planning ↻
